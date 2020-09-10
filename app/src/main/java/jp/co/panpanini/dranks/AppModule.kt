@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.cocktail.flux.CocktailFluxProvider
+import jp.co.panpanini.dranks.network.NetworkResponseAdapterFactory
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -18,6 +19,7 @@ val appModule = module {
     single {
         Retrofit.Builder()
             .baseUrl("https://www.thecocktaildb.com")
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
     }
