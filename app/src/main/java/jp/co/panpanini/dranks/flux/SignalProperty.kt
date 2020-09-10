@@ -21,7 +21,10 @@ class SignalProperty<T> private constructor() {
     }
 
     fun set(value: T?) {
-        _liveData.value = Event(value)
+        // only emit if someone is listening
+        if (_liveData.hasActiveObservers()) {
+            _liveData.value = Event(value)
+        }
     }
 
     val liveData: LiveData<T>
