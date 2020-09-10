@@ -4,7 +4,11 @@ import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.cocktail.Drink
 import jp.co.panpanini.dranks.flux.ActionCreator
 import jp.co.panpanini.dranks.flux.Dispatcher
+import jp.co.panpanini.dranks.network.Failure
+import jp.co.panpanini.dranks.network.ServerError
+import jp.co.panpanini.dranks.network.Success
 import kotlinx.coroutines.*
+import java.lang.Exception
 
 class CocktailActionCreator(
     private val cocktailApi: CocktailApi,
@@ -17,9 +21,11 @@ class CocktailActionCreator(
         if (cocktail.isBlank()) return dispatcher.dispatch(NoCocktailsFound)
 
         scope.launch(coroutineDispatcher) {
-            val cocktails = cocktailApi.search(cocktail)
-                .drinks
-                ?.map(Drink::toCocktail)
+            val cocktails = when (val response = cocktailApi.search(cocktail)) {
+                is Success -> response.data.drinks?.map(Drink::toCocktail)
+                is ServerError -> return@launch dispatcher.dispatch(NoCocktailsFound)
+                is Failure -> return@launch dispatcher.dispatch(NoCocktailsFound)
+            }
 
             dispatcher.dispatch(
                 if (cocktails != null) UpdateCocktails(cocktails) else NoCocktailsFound
