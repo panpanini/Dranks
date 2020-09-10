@@ -46,20 +46,16 @@ class MainActivity : AppCompatActivity() {
                         DrinksAppBar()
                         SearchBox(search = cocktailActionCreator::searchCocktail)
                         CocktailList(cocktailStore.cocktails.liveData)
-                        HandleNoCocktail(cocktailStore.noCocktailsFound.liveData)
                     }
                 }
             }
         }
-    }
-}
 
-@Composable
-fun HandleNoCocktail(noCocktails: LiveData<Boolean>) {
-    val show by noCocktails.observeAsState(false)
-    if (show) {
-        val context = ContextAmbient.current
-        Toast.makeText(context, "No Cocktails found", Toast.LENGTH_SHORT).show()
+        cocktailStore.noCocktailsFound.liveData.observe(this) { show ->
+            if (show) {
+                Toast.makeText(this, "No Cocktails found", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
 
