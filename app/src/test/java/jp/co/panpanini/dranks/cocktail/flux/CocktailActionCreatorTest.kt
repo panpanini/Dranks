@@ -8,6 +8,7 @@ import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.cocktail.Drink
 import jp.co.panpanini.dranks.cocktail.DrinkResponse
 import jp.co.panpanini.dranks.flux.Dispatcher
+import jp.co.panpanini.dranks.network.Success
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
@@ -47,7 +48,7 @@ class CocktailActionCreatorTest {
             whenever(it.toCocktail()).thenReturn(expected)
         }
         whenever(cocktailApi.search(searchTerm)).thenReturn(
-            DrinkResponse(listOf(drink))
+            Success(DrinkResponse(listOf(drink)))
         )
 
         target.searchCocktail(searchTerm)
@@ -58,7 +59,7 @@ class CocktailActionCreatorTest {
     @Test
     fun `searchCocktail should dispatch NoCocktailsFound if API returns an empty result`() = runBlockingTest {
         val searchTerm = "hoge"
-        whenever(cocktailApi.search(searchTerm)).thenReturn(DrinkResponse(null))
+        whenever(cocktailApi.search(searchTerm)).thenReturn(Success(DrinkResponse(null)))
 
         target.searchCocktail(searchTerm)
 
