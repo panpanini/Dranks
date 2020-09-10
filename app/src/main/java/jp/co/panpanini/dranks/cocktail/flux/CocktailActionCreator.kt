@@ -4,10 +4,7 @@ import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.cocktail.Drink
 import jp.co.panpanini.dranks.flux.ActionCreator
 import jp.co.panpanini.dranks.flux.Dispatcher
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class CocktailActionCreator(
     private val cocktailApi: CocktailApi,
@@ -28,6 +25,12 @@ class CocktailActionCreator(
                 if (cocktails != null) UpdateCocktails(cocktails) else NoCocktailsFound
             )
         }
+    }
 
+    fun noCocktailsFound() {
+        scope.launch(coroutineDispatcher) {
+            delay(5000)
+            dispatcher.dispatch(NoCocktailsFound)
+        }
     }
 }

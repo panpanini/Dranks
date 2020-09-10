@@ -1,14 +1,11 @@
 package jp.co.panpanini.dranks
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Border
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,16 +14,11 @@ import androidx.compose.runtime.state
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.ui.tooling.preview.Preview
-import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
-import dev.chrisbanes.accompanist.coil.CoilImageWithCrossfade
-import jp.co.panpanini.dranks.cocktail.Cocktail
 import jp.co.panpanini.dranks.cocktail.flux.CocktailActionCreator
 import jp.co.panpanini.dranks.cocktail.flux.CocktailFluxProvider
 import jp.co.panpanini.dranks.cocktail.flux.CocktailStore
@@ -54,10 +46,20 @@ class MainActivity : AppCompatActivity() {
                         DrinksAppBar()
                         SearchBox(search = cocktailActionCreator::searchCocktail)
                         CocktailList(cocktailStore.cocktails.liveData)
+                        HandleNoCocktail(cocktailStore.noCocktailsFound.liveData)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun HandleNoCocktail(noCocktails: LiveData<Boolean>) {
+    val show by noCocktails.observeAsState(false)
+    if (show) {
+        val context = ContextAmbient.current
+        Toast.makeText(context, "No Cocktails found", Toast.LENGTH_SHORT).show()
     }
 }
 
