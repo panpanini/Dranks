@@ -78,12 +78,11 @@ fun SearchBox(search: (String) -> Unit) {
                     onValueChange = { userNameState.value = it },
                     label = { Text(text = "Search:") },
                 )
-
-                Button(
-                    onClick = { search(userNameState.value) },
-                    modifier = Modifier.gravity(Alignment.CenterVertically)
-                ) {
-                    Text(text = "Search")
+                Stack(Modifier.fillMaxWidth().gravity(Alignment.CenterVertically)) {
+                    Button(
+                        onClick = { search(userNameState.value) },
+                        modifier = Modifier.gravity(Alignment.Center)
+                    ) { Text(text = "Search") }
                 }
             }
         }
