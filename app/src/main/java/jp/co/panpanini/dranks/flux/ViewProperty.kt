@@ -22,7 +22,7 @@ class ViewProperty<T> private constructor(initialValue: T? = null){
 
     var value: T?
         get() = _liveData.value
-        set(value) = _liveData.setValue(value)
+        set(value) = _liveData.postValue(value)
 
     val liveData: LiveData<T> = mediator
 }
