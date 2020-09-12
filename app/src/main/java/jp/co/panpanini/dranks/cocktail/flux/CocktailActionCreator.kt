@@ -21,30 +21,29 @@ class CocktailActionCreator(
     fun searchCocktail(cocktail: String) {
         if (cocktail.isBlank()) return dispatcher.dispatch(NoCocktailsFound)
 
+        dispatcher.dispatch(ShowLoading(true))
+
         scope.launch(coroutineDispatcher) {
             val cocktails = when (val response = cocktailApi.search(cocktail)) {
                 is Success -> response.data.drinks?.map(Drink::toCocktail)
                 else -> return@launch handleError(response)
             }
 
+            dispatcher.dispatch(ShowLoading(false))
             dispatcher.dispatch(
                 if (cocktails != null) UpdateCocktails(cocktails) else NoCocktailsFound
             )
         }
     }
 
-    fun noCocktailsFound() {
-        scope.launch(coroutineDispatcher) {
-            delay(5000)
-            dispatcher.dispatch(NoCocktailsFound)
-        }
-    }
-
     private fun handleError(response: NetworkResponse<*>) {
-        when (response) {
-            is ServerError -> dispatcher.dispatch(NoCocktailsFound)
-            is Failure -> dispatcher.dispatch(NoCocktailsFound)
-            is Success -> return // do nothing
-        }
+        dispatcher.dispatch(ShowLoading(false))
+        dispatcher.dispatch(
+            when (response) {
+                is ServerError -> NoCocktailsFound
+                is Failure -> NoCocktailsFound
+                is Success -> return // do nothing
+            }
+        )
     }
 }

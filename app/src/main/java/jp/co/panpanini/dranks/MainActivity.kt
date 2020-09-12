@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                     Column {
                         DrinksAppBar()
                         SearchBox(search = cocktailActionCreator::searchCocktail)
+                        Loading(cocktailStore.showLoading.liveData)
                         CocktailList(cocktailStore.cocktails.liveData)
                     }
                 }
@@ -85,7 +86,16 @@ fun SearchBox(search: (String) -> Unit) {
                     Text(text = "Search")
                 }
             }
+        }
+    }
+}
 
+@Composable
+fun Loading(loadingLiveData: LiveData<Boolean>) {
+    val isLoading by loadingLiveData.observeAsState(false)
+    if (isLoading) {
+        Stack(Modifier.fillMaxHeight().fillMaxWidth()) {
+            CircularProgressIndicator(Modifier.gravity(Alignment.Center))
         }
     }
 }

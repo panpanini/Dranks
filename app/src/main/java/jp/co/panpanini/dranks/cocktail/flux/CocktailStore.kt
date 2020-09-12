@@ -19,9 +19,12 @@ class CocktailStore(
 
     val noCocktailsFound = SignalProperty.create<Boolean>()
 
+    val showLoading = ViewProperty.create<Boolean>()
+
     override fun handleAction(action: CocktailAction) = when (action) {
         is UpdateCocktails -> cocktails.value = action.cocktails
         NoCocktailsFound -> noCocktailsFound.set(true)
+        is ShowLoading -> showLoading.value = (action.show)
     }
 
 }
