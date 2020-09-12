@@ -48,18 +48,7 @@ fun CocktailPreview() {
     val cocktail = Cocktail(
         1,
         "Neko",
-        null,
-        null,
-        null,
-        null,
-        null,
-        true,
-        null,
-        null,
-        "http://placekitten.com/200/200",
-        listOf(),
-        true,
-        null
+        thumbUrl = "http://placekitten.com/200/200",
     )
 
     CocktailRow(cocktail)
