@@ -1,12 +1,11 @@
 package jp.co.panpanini.dranks.cocktail.ui
 
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope.gravity
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -47,6 +46,33 @@ fun CocktailRow(cocktail: Cocktail, onCocktailClicked: (Cocktail) -> Unit) {
     }
 }
 
+@Composable
+fun CocktailHeader(cocktail: Cocktail) {
+    ConstraintLayout {
+        val (image, title) = createRefs()
+
+        CoilImageWithCrossfade(
+                request = ImageRequest.Builder(ContextAmbient.current)
+                        .data(cocktail.thumbUrl)
+                        .build(),
+                modifier = Modifier.constrainAs(image) {
+                    top.linkTo(parent.top)
+                    centerHorizontallyTo(parent)
+                }
+        )
+        Text(
+                cocktail.name,
+                modifier = Modifier.constrainAs(title) {
+                    bottom.linkTo(image.bottom)
+                    centerHorizontallyTo(image)
+                    width = Dimension.fillToConstraints
+
+                }.background(MaterialTheme.colors.background.copy(alpha = 0.8f)),
+                style = MaterialTheme.typography.h2,
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun CocktailPreview() {
@@ -57,4 +83,15 @@ fun CocktailPreview() {
     )
 
     CocktailRow(cocktail) { }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CocktailHeaderPreview() {
+    val cocktail = Cocktail(
+            1,
+            "Neko",
+            thumbUrl = "http://placekitten.com/200/200",
+    )
+    CocktailHeader(cocktail = cocktail)
 }
