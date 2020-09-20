@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.cocktail.flux.CocktailFluxProvider
+import jp.co.panpanini.dranks.detail.flux.DetailFluxProvider
 import jp.co.panpanini.dranks.network.NetworkResponseAdapterFactory
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -30,5 +31,9 @@ val appModule = module {
 
     viewModel {
         CocktailFluxProvider(get())
+    }
+
+    viewModel {
+        DetailFluxProvider(get())
     }
 }
