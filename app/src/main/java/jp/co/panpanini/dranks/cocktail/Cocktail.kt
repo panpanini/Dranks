@@ -1,5 +1,7 @@
 package jp.co.panpanini.dranks.cocktail
 
+import java.io.Serializable
+
 
 data class Cocktail(
     val id : Int,
@@ -16,9 +18,9 @@ data class Cocktail(
     val ingredients: List<Ingredient> = listOf(),
     val creativeCommons: Boolean = false,
     val dateModified : String? = null
-)
+) : Serializable
 
 data class Ingredient(
     val name: String,
     val measure: String
-)
+) : Serializable
