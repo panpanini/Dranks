@@ -18,7 +18,7 @@ class CocktailListTest {
         val cocktail = Cocktail(1, "Neko", null, null, null, null, null, true, null, null, "http://placekitten.com/200/200", listOf(), true, null)
 
         composeTestRule.setContent {
-            CocktailRow(cocktail)
+            CocktailRow(cocktail) { }
         }
 
         onAllNodesWithText("Neko").assertCountEquals(1)
