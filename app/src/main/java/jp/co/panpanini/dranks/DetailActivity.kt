@@ -4,13 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayout
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.platform.setContent
 import jp.co.panpanini.dranks.cocktail.Cocktail
+import jp.co.panpanini.dranks.cocktail.ui.CocktailDetail
 import jp.co.panpanini.dranks.cocktail.ui.CocktailHeader
 import jp.co.panpanini.dranks.detail.flux.DetailActionCreator
 import jp.co.panpanini.dranks.detail.flux.DetailFluxProvider
@@ -31,6 +37,7 @@ class DetailActivity : AppCompatActivity() {
     private val cocktail: Cocktail
         get() = intent.getSerializableExtra(KEY_COCKTAIL) as Cocktail
 
+    @OptIn(ExperimentalLayout::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,12 +46,15 @@ class DetailActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         DrinksAppBar()
-                        val cocktail = detailStore.cocktail.liveData.observeAsState()
-                        cocktail.value?.let {
-                            CocktailHeader(cocktail = it)
+                        ScrollableColumn {
+                            val cocktail = detailStore.cocktail.liveData.observeAsState()
+                            cocktail.value?.let {
+                                CocktailHeader(cocktail = it)
+                                CocktailDetail(cocktail = it)
+                            }
                         }
-
                     }
+
                 }
             }
         }
