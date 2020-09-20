@@ -1,6 +1,7 @@
 package jp.co.panpanini.dranks.cocktail.ui
 
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope.gravity
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,14 +23,18 @@ import jp.co.panpanini.dranks.R
 import jp.co.panpanini.dranks.cocktail.Cocktail
 
 @Composable
-fun CocktailList(cocktailsLiveData: LiveData<List<Cocktail>>) {
+fun CocktailList(cocktailsLiveData: LiveData<List<Cocktail>>, onCocktailClicked: (Cocktail) -> Unit) {
     val cocktails by cocktailsLiveData.observeAsState(listOf())
-    LazyColumnFor(items = cocktails) { CocktailRow(it) }
+    LazyColumnFor(items = cocktails) { CocktailRow(it, onCocktailClicked) }
 }
 
 @Composable
-fun CocktailRow(cocktail: Cocktail) {
-    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+fun CocktailRow(cocktail: Cocktail, onCocktailClicked: (Cocktail) -> Unit) {
+
+    Row(modifier = Modifier.fillMaxWidth()
+            .padding(8.dp)
+            .clickable(onClick = { onCocktailClicked(cocktail) })
+    ) {
         CoilImageWithCrossfade(
             request = ImageRequest.Builder(ContextAmbient.current)
                 .data(cocktail.thumbUrl)
@@ -51,5 +56,5 @@ fun CocktailPreview() {
         thumbUrl = "http://placekitten.com/200/200",
     )
 
-    CocktailRow(cocktail)
+    CocktailRow(cocktail) { }
 }

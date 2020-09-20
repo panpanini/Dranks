@@ -10,12 +10,13 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.state
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.ui.tooling.preview.Preview
@@ -46,7 +47,11 @@ class MainActivity : AppCompatActivity() {
                         DrinksAppBar()
                         SearchBox(search = cocktailActionCreator::searchCocktail)
                         Loading(cocktailStore.showLoading.liveData)
-                        CocktailList(cocktailStore.cocktails.liveData)
+                        CocktailList(cocktailStore.cocktails.liveData) {
+                            startActivity(
+                                    DetailActivity.createIntent(this@MainActivity, it)
+                            )
+                        }
                     }
                 }
             }
@@ -70,13 +75,19 @@ fun DrinksAppBar() {
 @Composable
 fun SearchBox(search: (String) -> Unit) {
     Column() {
-        val userNameState = state { "" }
+        val userNameState = remember { mutableStateOf("") }
         Surface(border = BorderStroke(1.dp, Color.Gray), modifier = Modifier.fillMaxWidth()) {
             Row {
                 TextField(
-                    value = userNameState.value,
-                    onValueChange = { userNameState.value = it },
-                    label = { Text(text = "Search:") },
+                        value = userNameState.value,
+                        onValueChange = { userNameState.value = it },
+                        label = { Text(text = "Search:") },
+                        imeAction = ImeAction.Done,
+                        onImeActionPerformed = { action, softwareController ->
+                            if (action == ImeAction.Done) {
+                                softwareController?.hideSoftwareKeyboard()
+                            }
+                        }
                 )
                 Stack(Modifier.fillMaxWidth().gravity(Alignment.CenterVertically)) {
                     Button(
