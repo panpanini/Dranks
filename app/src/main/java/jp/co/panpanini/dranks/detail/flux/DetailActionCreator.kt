@@ -16,6 +16,6 @@ class DetailActionCreator(
 ) : ActionCreator<DetailAction>(dispatcher) {
 
     fun initCocktail(cocktail: Cocktail) {
-
+        dispatcher.dispatch(SetCocktail(cocktail))
     }
 }
