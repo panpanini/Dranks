@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +21,7 @@ import coil.transform.CircleCropTransformation
 import dev.chrisbanes.accompanist.coil.CoilImageWithCrossfade
 import jp.co.panpanini.dranks.R
 import jp.co.panpanini.dranks.cocktail.Cocktail
+import jp.co.panpanini.dranks.cocktail.Ingredient
 
 @Composable
 fun CocktailList(cocktailsLiveData: LiveData<List<Cocktail>>, onCocktailClicked: (Cocktail) -> Unit) {
@@ -31,8 +33,8 @@ fun CocktailList(cocktailsLiveData: LiveData<List<Cocktail>>, onCocktailClicked:
 fun CocktailRow(cocktail: Cocktail, onCocktailClicked: (Cocktail) -> Unit) {
 
     Row(modifier = Modifier.fillMaxWidth()
-            .padding(8.dp)
-            .clickable(onClick = { onCocktailClicked(cocktail) })
+        .padding(8.dp)
+        .clickable(onClick = { onCocktailClicked(cocktail) })
     ) {
         CoilImageWithCrossfade(
             request = ImageRequest.Builder(ContextAmbient.current)
@@ -52,25 +54,100 @@ fun CocktailHeader(cocktail: Cocktail) {
         val (image, title) = createRefs()
 
         CoilImageWithCrossfade(
-                request = ImageRequest.Builder(ContextAmbient.current)
-                        .data(cocktail.thumbUrl)
-                        .build(),
-                modifier = Modifier.constrainAs(image) {
-                    top.linkTo(parent.top)
-                    centerHorizontallyTo(parent)
-                }
+            request = ImageRequest.Builder(ContextAmbient.current)
+                .data(cocktail.thumbUrl)
+                .build(),
+            modifier = Modifier.constrainAs(image) {
+                top.linkTo(parent.top)
+                centerHorizontallyTo(parent)
+            }
         )
         Text(
-                cocktail.name,
-                modifier = Modifier.constrainAs(title) {
-                    bottom.linkTo(image.bottom)
-                    centerHorizontallyTo(image)
-                    width = Dimension.fillToConstraints
+            cocktail.name,
+            modifier = Modifier.constrainAs(title) {
+                bottom.linkTo(image.bottom)
+                centerHorizontallyTo(image)
+                width = Dimension.fillToConstraints
 
-                }.background(MaterialTheme.colors.background.copy(alpha = 0.8f)),
-                style = MaterialTheme.typography.h2,
+            }.background(MaterialTheme.colors.background.copy(alpha = 0.8f)),
+            style = MaterialTheme.typography.h2,
         )
     }
+}
+
+@ExperimentalLayout
+@Composable
+fun CocktailDetail(cocktail: Cocktail) {
+    Column {
+        ChipLayout(cocktail = cocktail)
+        Ingredients(ingredients = cocktail.ingredients)
+        Instructions(cocktail)
+    }
+
+}
+
+@ExperimentalLayout
+@Composable
+fun ChipLayout(cocktail: Cocktail) {
+    FlowRow {
+        LabelChip(
+            text = "Alcoholic",
+            modifier = Modifier.padding(8.dp)
+        )
+        cocktail.glass?.let {
+            LabelChip(
+                text = cocktail.glass,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+        cocktail.category?.let {
+            LabelChip(
+                text = cocktail.category,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun Ingredients(ingredients: List<Ingredient>) {
+    Column {
+        Text(
+            text = "Ingredients:",
+            style = MaterialTheme.typography.h5
+        )
+        ingredients.forEach { ingredient ->
+            Text(
+                text = "${ingredient.name}: ${ingredient.measure}",
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun Instructions(cocktail: Cocktail) {
+    Column {
+        Text(
+            text = "Instructions:",
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.padding(top = 16.dp)
+        )
+        Text(
+            text = cocktail.instructions ?: return,
+            modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 16.dp)
+        )
+    }
+
+}
+
+@Composable
+fun LabelChip(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        modifier = modifier.background(MaterialTheme.colors.primary, RoundedCornerShape(8.dp))
+            .padding(8.dp)
+    )
 }
 
 @Preview(showBackground = true)
@@ -89,9 +166,9 @@ fun CocktailPreview() {
 @Composable
 fun CocktailHeaderPreview() {
     val cocktail = Cocktail(
-            1,
-            "Neko",
-            thumbUrl = "http://placekitten.com/200/200",
+        1,
+        "Neko",
+        thumbUrl = "http://placekitten.com/200/200",
     )
     CocktailHeader(cocktail = cocktail)
 }
