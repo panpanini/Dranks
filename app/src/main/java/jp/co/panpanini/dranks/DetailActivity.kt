@@ -7,8 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.setContent
 import jp.co.panpanini.dranks.cocktail.Cocktail
+import jp.co.panpanini.dranks.cocktail.ui.CocktailHeader
 import jp.co.panpanini.dranks.detail.flux.DetailActionCreator
 import jp.co.panpanini.dranks.detail.flux.DetailFluxProvider
 import jp.co.panpanini.dranks.detail.flux.DetailStore
@@ -36,6 +39,11 @@ class DetailActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         DrinksAppBar()
+                        val cocktail = detailStore.cocktail.liveData.observeAsState()
+                        cocktail.value?.let {
+                            CocktailHeader(cocktail = it)
+                        }
+
                     }
                 }
             }
