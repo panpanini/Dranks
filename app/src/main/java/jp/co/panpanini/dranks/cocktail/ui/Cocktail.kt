@@ -22,6 +22,7 @@ import dev.chrisbanes.accompanist.coil.CoilImageWithCrossfade
 import jp.co.panpanini.dranks.R
 import jp.co.panpanini.dranks.cocktail.Cocktail
 import jp.co.panpanini.dranks.cocktail.Ingredient
+import jp.co.panpanini.dranks.ui.LabelChip
 
 @Composable
 fun CocktailList(cocktailsLiveData: LiveData<List<Cocktail>>, onCocktailClicked: (Cocktail) -> Unit) {
@@ -139,15 +140,6 @@ fun Instructions(cocktail: Cocktail) {
         )
     }
 
-}
-
-@Composable
-fun LabelChip(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        modifier = modifier.background(MaterialTheme.colors.primary, RoundedCornerShape(8.dp))
-            .padding(8.dp)
-    )
 }
 
 @Preview(showBackground = true)
