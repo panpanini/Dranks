@@ -3,9 +3,12 @@ package jp.co.panpanini.dranks
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Stack
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,10 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.node.Ref
 import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.ui.tooling.preview.Preview
 import jp.co.panpanini.dranks.cocktail.flux.CocktailActionCreator
@@ -74,29 +77,36 @@ fun DrinksAppBar() {
 
 @Composable
 fun SearchBox(search: (String) -> Unit) {
-    Column() {
-        val userNameState = remember { mutableStateOf("") }
-        Surface(border = BorderStroke(1.dp, Color.Gray), modifier = Modifier.fillMaxWidth()) {
-            Row {
-                TextField(
-                        value = userNameState.value,
-                        onValueChange = { userNameState.value = it },
-                        label = { Text(text = "Search:") },
-                        imeAction = ImeAction.Done,
-                        onImeActionPerformed = { action, softwareController ->
-                            if (action == ImeAction.Done) {
-                                softwareController?.hideSoftwareKeyboard()
-                            }
-                        }
-                )
-                Stack(Modifier.fillMaxWidth().gravity(Alignment.CenterVertically)) {
-                    Button(
-                        onClick = { search(userNameState.value) },
-                        modifier = Modifier.gravity(Alignment.Center)
-                    ) { Text(text = "Search") }
+    val userNameState = remember { mutableStateOf("") }
+
+    val closeKeyboardAndSearch = { searchTerm: String, controller: SoftwareKeyboardController? ->
+        search(searchTerm)
+        controller?.hideSoftwareKeyboard()
+    }
+    Surface(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        val keyboardController: Ref<SoftwareKeyboardController> = remember { Ref() }
+        OutlinedTextField(
+            value = userNameState.value,
+            onValueChange = userNameState::value::set,
+            label = { Text(text = "Search:") },
+            imeAction = ImeAction.Done,
+            onImeActionPerformed = { action, softwareController ->
+                if (action == ImeAction.Done) {
+                    closeKeyboardAndSearch(userNameState.value, softwareController)
                 }
-            }
-        }
+            },
+            onTextInputStarted = keyboardController::value::set,
+            trailingIcon = {
+                Button(
+                    onClick = {
+                        closeKeyboardAndSearch(userNameState.value, keyboardController.value)
+                    },
+                ) { Text(text = "Search") }
+            },
+            modifier = Modifier.background(MaterialTheme.colors.background)
+        )
     }
 }
 
