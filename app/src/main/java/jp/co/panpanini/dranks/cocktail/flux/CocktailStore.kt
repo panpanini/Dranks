@@ -21,10 +21,16 @@ class CocktailStore(
 
     val showLoading = ViewProperty.create<Boolean>()
 
+    val recentSearches = ViewProperty.create<List<String>>()
+
+    val recentSearchVisibility = ViewProperty.create(false)
+
     override fun handleAction(action: CocktailAction) = when (action) {
         is UpdateCocktails -> cocktails.value = action.cocktails
         NoCocktailsFound -> noCocktailsFound.set(true)
         is ShowLoading -> showLoading.value = (action.show)
+        is UpdateRecentSearches -> recentSearches.value = action.recentSearches
+        is SetRecentSearchVisibility -> recentSearchVisibility.value = action.visible
     }
 
 }

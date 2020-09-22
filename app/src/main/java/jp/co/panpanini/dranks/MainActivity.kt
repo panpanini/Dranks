@@ -46,7 +46,17 @@ class MainActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         DrinksAppBar()
-                        SearchBox(search = cocktailActionCreator::searchCocktail)
+                        val recentSearchVisibility = cocktailStore
+                            .recentSearchVisibility
+                            .liveData
+                            .observeAsState(false)
+
+                        SearchBox(
+                            search = cocktailActionCreator::searchCocktail,
+                            cocktailStore.recentSearches.liveData,
+                            recentSearchVisibility.value,
+                            cocktailActionCreator::fetchRecentSearches
+                        )
                         Loading(cocktailStore.showLoading.liveData)
                         CocktailList(cocktailStore.cocktails.liveData) {
                             startActivity(

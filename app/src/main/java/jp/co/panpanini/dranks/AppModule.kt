@@ -1,11 +1,13 @@
 package jp.co.panpanini.dranks
 
+import androidx.datastore.preferences.createDataStore
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.cocktail.flux.CocktailFluxProvider
 import jp.co.panpanini.dranks.detail.flux.DetailFluxProvider
 import jp.co.panpanini.dranks.network.NetworkResponseAdapterFactory
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -29,8 +31,16 @@ val appModule = module {
         get<Retrofit>().create(CocktailApi::class.java)
     }
 
+    single {
+        androidApplication().createDataStore(name = "search")
+    }
+
+    single {
+        SearchService(get())
+    }
+
     viewModel {
-        CocktailFluxProvider(get())
+        CocktailFluxProvider(get(), get())
     }
 
     viewModel {

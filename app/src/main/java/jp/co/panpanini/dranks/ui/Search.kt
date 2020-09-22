@@ -9,28 +9,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import androidx.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalFocus::class)
 @Composable
-fun SearchBox(search: (String) -> Unit) {
+fun SearchBox(
+    search: (String) -> Unit,
+    recentSearches: LiveData<List<String>>,
+    showRecentSearches: Boolean,
+    onTextInputStarted: () -> Unit
+) {
     val userNameState = remember { mutableStateOf("") }
 
     val closeKeyboardAndSearch = { searchTerm: String, controller: SoftwareKeyboardController? ->
         search(searchTerm)
         controller?.hideSoftwareKeyboard()
     }
-    Surface(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    Column {
         val keyboardController: Ref<SoftwareKeyboardController> = remember { Ref() }
         OutlinedTextField(
             value = userNameState.value,
@@ -42,7 +49,10 @@ fun SearchBox(search: (String) -> Unit) {
                     closeKeyboardAndSearch(userNameState.value, softwareController)
                 }
             },
-            onTextInputStarted = keyboardController::value::set,
+            onTextInputStarted = {
+                keyboardController::value.set(it)
+                onTextInputStarted()
+            },
             trailingIcon = {
                 Button(
                     onClick = {
@@ -51,13 +61,26 @@ fun SearchBox(search: (String) -> Unit) {
                 ) { Text(text = "Search") }
             },
             modifier = Modifier.background(MaterialTheme.colors.background)
+                .fillMaxWidth()
         )
+        val searches = recentSearches.observeAsState(listOf())
+        if (showRecentSearches) {
+            RecentSearches(searches.value) {
+                closeKeyboardAndSearch(it, keyboardController.value)
+            }
+        }
     }
 }
 
 @Composable
 fun RecentSearches(searches: List<String>, onClick: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.background)) {
+        Text(
+            text = "Recent searches",
+            style = MaterialTheme.typography.h5,
+            color = MaterialTheme.colors.onBackground,
+            modifier = Modifier.padding(start = 8.dp, top = 8.dp)
+        )
         searches.forEach {
             Text(
                 text = it,
@@ -73,7 +96,8 @@ fun RecentSearches(searches: List<String>, onClick: (String) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun SearchBoxPreview() {
-    SearchBox { }
+    val recentSearches = liveData<List<String>> { listOf<String>() }
+    SearchBox({}, recentSearches, false, {})
 }
 
 @Preview(showBackground = true)

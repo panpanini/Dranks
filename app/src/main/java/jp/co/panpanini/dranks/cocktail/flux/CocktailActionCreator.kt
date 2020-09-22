@@ -1,5 +1,6 @@
 package jp.co.panpanini.dranks.cocktail.flux
 
+import jp.co.panpanini.dranks.SearchService
 import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.cocktail.Drink
 import jp.co.panpanini.dranks.flux.ActionCreator
@@ -8,11 +9,15 @@ import jp.co.panpanini.dranks.network.Failure
 import jp.co.panpanini.dranks.network.NetworkResponse
 import jp.co.panpanini.dranks.network.ServerError
 import jp.co.panpanini.dranks.network.Success
-import kotlinx.coroutines.*
-import java.lang.Exception
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class CocktailActionCreator(
     private val cocktailApi: CocktailApi,
+    private val searchService: SearchService,
     private val scope: CoroutineScope,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main,
     dispatcher: Dispatcher<CocktailAction>
@@ -28,11 +33,21 @@ class CocktailActionCreator(
                 is Success -> response.data.drinks?.map(Drink::toCocktail)
                 else -> return@launch handleError(response)
             }
-
+            searchService.addRecentSearch(cocktail)
+            dispatcher.dispatch(SetRecentSearchVisibility(false))
             dispatcher.dispatch(ShowLoading(false))
             dispatcher.dispatch(
                 if (cocktails != null) UpdateCocktails(cocktails) else NoCocktailsFound
             )
+        }
+    }
+
+    fun fetchRecentSearches() {
+        scope.launch(coroutineDispatcher) {
+            searchService.getRecentSearches().collect {
+                dispatcher.dispatch(UpdateRecentSearches(it))
+                dispatcher.dispatch(SetRecentSearchVisibility(true))
+            }
         }
     }
 
