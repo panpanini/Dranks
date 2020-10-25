@@ -36,6 +36,8 @@ object Versions {
     const val koin = "2.1.6"
 
     const val datastorePreferences = "1.0.0-alpha01"
+
+    const val releaseHubPlugin = "1.6.1"
 }
 
 object Dependencies {
@@ -93,4 +95,12 @@ object AndroidTestDependencies {
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
 
     const val composeTest = "androidx.ui:ui-test:${Versions.compose}"
+}
+
+object ClasspathDependencies {
+    const val releaseHubPlugin = "com.releaseshub:releases-hub-gradle-plugin:${Versions.releaseHubPlugin}"
+}
+
+object Plugins {
+    const val releaseHubPlugin = "com.releaseshub.gradle.plugin"
 }
