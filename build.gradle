@@ -39,4 +39,6 @@ task clean(type: Delete) {
 
 releasesHub {
     dependenciesClassNames = ["Dependencies.kt"]
+    gitHubRepositoryName = "Dranks"
+    gitHubRepositoryOwner = "panpanini"
 }
