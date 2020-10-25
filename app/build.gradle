@@ -35,58 +35,58 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.4.0'
+        kotlinCompilerExtensionVersion Versions.compose
+        kotlinCompilerVersion Versions.kotlin
     }
 }
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.1'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.ui:ui-tooling:$compose_version"
+    implementation Dependencies.kotlinStdLib
+    implementation Dependencies.coreKtx
+    implementation Dependencies.appcompat
+    implementation Dependencies.material
+    implementation Dependencies.composeUi
+    implementation Dependencies.composeRuntimeLiveData
+    implementation Dependencies.composeMaterial
+    implementation Dependencies.composeTooling
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha07"
+    implementation Dependencies.lifecycleViewModel
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha07"
-    testImplementation 'junit:junit:4.13'
-    testImplementation 'org.mockito:mockito-core:3.5.10'
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.9'
-    testImplementation 'android.arch.core:core-testing:1.1.1'
-    testImplementation 'org.assertj:assertj-core:3.16.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation "androidx.ui:ui-test:$compose_version"
+    implementation Dependencies.lifecycleLiveData
+    testImplementation TestDependencies.junit
+    testImplementation TestDependencies.mockito
+    testImplementation TestDependencies.mockitoKotlin
+    testImplementation TestDependencies.coroutinesTest
+    testImplementation TestDependencies.coreTesting
+    testImplementation TestDependencies.assertJ
+    androidTestImplementation AndroidTestDependencies.androidxJunit
+    androidTestImplementation AndroidTestDependencies.espresso
+    androidTestImplementation AndroidTestDependencies.composeTest
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9'
+    implementation Dependencies.coroutines
 
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation Dependencies.retrofit
 
-    implementation("com.squareup.moshi:moshi:1.9.3")
-    implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
+    implementation Dependencies.moshi
+    implementation Dependencies.moshiKotlin
 
-    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+    implementation Dependencies.retrofitMoshi
 
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.2.1"
+    implementation Dependencies.accompanist
 
-    implementation "org.koin:koin-core:$koin_version"
+    implementation Dependencies.koin
     // Koin for Android
-    implementation "org.koin:koin-android:$koin_version"
+    implementation Dependencies.koinAndroid
     // Koin AndroidX Scope features
-    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation Dependencies.koinAndroidxScope
     // Koin AndroidX ViewModel features
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation Dependencies.koinAndroidxViewModel
     // Koin AndroidX Fragment features
-    implementation "org.koin:koin-androidx-fragment:$koin_version"
+    implementation Dependencies.koinAndroidxFragment
 
     // Preferences DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha01"
+    implementation Dependencies.datastorePreferences
 
 }
