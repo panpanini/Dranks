@@ -1,2 +1,4 @@
 rootProject.name = "Dranks"
 include ':app'
+include ':server'
+include ':models'
