@@ -38,6 +38,12 @@ object Versions {
     const val datastorePreferences = "1.0.0-alpha01"
 
     const val releaseHubPlugin = "1.6.1"
+
+    const val kotlinxSerialization = "1.0.1"
+
+    const val ktor = "1.5.0"
+
+    const val logback = "1.2.1"
 }
 
 object Dependencies {
@@ -74,6 +80,22 @@ object Dependencies {
     const val koinAndroidxFragment = "org.koin:koin-androidx-fragment:${Versions.koin}"
 
     const val datastorePreferences = "androidx.datastore:datastore-preferences:${Versions.datastorePreferences}"
+
+    const val logback = "ch.qos.logback:logback-classic:${Versions.logback}"
+
+}
+
+object KotlinxSerialization {
+    const val common = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+    const val jvm = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+    const val js = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+}
+
+object Ktor {
+    const val serverNetty = "io.ktor:ktor-server-netty:${Versions.ktor}"
+    const val clientCore = "io.ktor:ktor-client-core:${Versions.ktor}"
+    const val clientOkhttp = "io.ktor:ktor-client-okhttp:${Versions.ktor}"
+    const val locations = "io.ktor:ktor-locations:${Versions.ktor}"
 }
 
 object TestDependencies {
