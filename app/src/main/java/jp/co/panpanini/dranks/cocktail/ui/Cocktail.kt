@@ -1,24 +1,23 @@
 package jp.co.panpanini.dranks.cocktail.ui
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
-import androidx.ui.tooling.preview.Preview
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
-import dev.chrisbanes.accompanist.coil.CoilImageWithCrossfade
+import dev.chrisbanes.accompanist.coil.CoilImage
 import jp.co.panpanini.dranks.R
 import jp.co.panpanini.dranks.cocktail.Cocktail
 import jp.co.panpanini.dranks.cocktail.Ingredient
@@ -27,7 +26,7 @@ import jp.co.panpanini.dranks.ui.LabelChip
 @Composable
 fun CocktailList(cocktailsLiveData: LiveData<List<Cocktail>>, onCocktailClicked: (Cocktail) -> Unit) {
     val cocktails by cocktailsLiveData.observeAsState(listOf())
-    LazyColumnFor(items = cocktails) { CocktailRow(it, onCocktailClicked) }
+    LazyColumn { items(cocktails) { CocktailRow(it, onCocktailClicked) } }
 }
 
 @Composable
@@ -37,7 +36,7 @@ fun CocktailRow(cocktail: Cocktail, onCocktailClicked: (Cocktail) -> Unit) {
         .padding(8.dp)
         .clickable(onClick = { onCocktailClicked(cocktail) })
     ) {
-        CoilImageWithCrossfade(
+        CoilImage(
             request = ImageRequest.Builder(ContextAmbient.current)
                 .data(cocktail.thumbUrl)
                 .size(250, 250)
@@ -45,7 +44,7 @@ fun CocktailRow(cocktail: Cocktail, onCocktailClicked: (Cocktail) -> Unit) {
                 .placeholder(R.drawable.ic_launcher_background)
                 .build()
         )
-        Text(cocktail.name, modifier = Modifier.gravity(Alignment.CenterVertically).padding(start = 8.dp))
+        Text(cocktail.name, modifier = Modifier.align(Alignment.CenterVertically).padding(start = 8.dp))
     }
 }
 
@@ -54,7 +53,7 @@ fun CocktailHeader(cocktail: Cocktail) {
     ConstraintLayout {
         val (image, title) = createRefs()
 
-        CoilImageWithCrossfade(
+        CoilImage(
             request = ImageRequest.Builder(ContextAmbient.current)
                 .data(cocktail.thumbUrl)
                 .build(),

@@ -1,6 +1,5 @@
 package jp.co.panpanini.dranks.ui
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,21 +8,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import androidx.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalFocus::class)
 @Composable
 fun SearchBox(
     search: (String) -> Unit,
@@ -43,7 +41,6 @@ fun SearchBox(
             value = userNameState.value,
             onValueChange = userNameState::value::set,
             label = { Text(text = "Search:") },
-            imeAction = ImeAction.Done,
             onImeActionPerformed = { action, softwareController ->
                 if (action == ImeAction.Done) {
                     closeKeyboardAndSearch(userNameState.value, softwareController)

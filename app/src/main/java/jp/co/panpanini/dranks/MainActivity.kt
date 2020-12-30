@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Stack
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.CircularProgressIndicator
@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.LiveData
-import androidx.ui.tooling.preview.Preview
 import jp.co.panpanini.dranks.cocktail.flux.CocktailActionCreator
 import jp.co.panpanini.dranks.cocktail.flux.CocktailFluxProvider
 import jp.co.panpanini.dranks.cocktail.flux.CocktailStore
@@ -88,13 +87,13 @@ fun DrinksAppBar() {
 fun Loading(loadingLiveData: LiveData<Boolean>) {
     val isLoading by loadingLiveData.observeAsState(false)
     if (isLoading) {
-        Stack(Modifier.fillMaxHeight().fillMaxWidth()) {
-            CircularProgressIndicator(Modifier.gravity(Alignment.Center))
+        Box(Modifier.fillMaxHeight().fillMaxWidth()) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun AppBarPreview() {
     DranksTheme {
