@@ -8,7 +8,7 @@ object Versions {
 
     const val material = "1.2.1"
 
-    const val compose = "1.0.0-alpha04"
+    const val compose = "1.0.0-alpha09"
 
     const val lifecycle = "2.3.0-alpha07"
 
@@ -31,7 +31,7 @@ object Versions {
 
     const val moshi = "1.9.3"
 
-    const val accompanist = "0.2.1"
+    const val accompanist = "0.4.1"
 
     const val koin = "2.1.6"
 
@@ -58,7 +58,7 @@ object Dependencies {
     const val composeUi = "androidx.compose.ui:ui:${Versions.compose}"
     const val composeRuntimeLiveData = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
     const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
-    const val composeTooling = "androidx.ui:ui-tooling:${Versions.compose}"
+    const val composeTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
 
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
