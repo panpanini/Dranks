@@ -47,10 +47,10 @@ dependencies {
     implementation Dependencies.appcompat
     implementation Dependencies.material
 
-    implementation Dependencies.composeUi
-    implementation Dependencies.composeRuntimeLiveData
-    implementation Dependencies.composeMaterial
-    implementation Dependencies.composeTooling
+    implementation Compose.ui
+    implementation Compose.runtimeLiveData
+    implementation Compose.material
+    implementation Compose.tooling
 
     // ViewModel
     implementation Dependencies.lifecycleViewModel

@@ -55,10 +55,7 @@ object Dependencies {
 
     const val material = "com.google.android.material:material:${Versions.material}"
 
-    const val composeUi = "androidx.compose.ui:ui:${Versions.compose}"
-    const val composeRuntimeLiveData = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
-    const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
-    const val composeTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+
 
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
@@ -83,6 +80,13 @@ object Dependencies {
 
     const val logback = "ch.qos.logback:logback-classic:${Versions.logback}"
 
+}
+
+object Compose {
+    const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+    const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
+    const val material = "androidx.compose.material:material:${Versions.compose}"
+    const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
 }
 
 object KotlinxSerialization {
