@@ -42,6 +42,8 @@ android {
 
 dependencies {
 
+    implementation(project(":models"))
+
     implementation Dependencies.kotlinStdLib
     implementation Dependencies.coreKtx
     implementation Dependencies.appcompat
@@ -89,5 +91,7 @@ dependencies {
 
     // Preferences DataStore
     implementation Dependencies.datastorePreferences
+
+    implementation KotlinxSerialization.jvm
 
 }
