@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import com.github.panpanini.cocktail.Cocktail
+import com.github.panpanini.cocktail.Ingredient
 import dev.chrisbanes.accompanist.coil.CoilImage
 import jp.co.panpanini.dranks.R
-import jp.co.panpanini.dranks.cocktail.Cocktail
-import jp.co.panpanini.dranks.cocktail.Ingredient
 import jp.co.panpanini.dranks.ui.LabelChip
 
 @Composable
@@ -96,13 +96,13 @@ fun ChipLayout(cocktail: Cocktail) {
         )
         cocktail.glass?.let {
             LabelChip(
-                text = cocktail.glass,
+                text = it,
                 modifier = Modifier.padding(8.dp)
             )
         }
         cocktail.category?.let {
             LabelChip(
-                text = cocktail.category,
+                text = it,
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -162,4 +162,23 @@ fun CocktailHeaderPreview() {
         thumbUrl = "http://placekitten.com/200/200",
     )
     CocktailHeader(cocktail = cocktail)
+}
+
+fun Cocktail(id: Int, name: String, thumbUrl: String): com.github.panpanini.cocktail.Cocktail {
+    return com.github.panpanini.cocktail.Cocktail(
+        id,
+        name,
+        thumbUrl = thumbUrl,
+        alternativeName = null,
+        tags = null,
+        videoUrl = null,
+        category = null,
+        iba = null,
+        alcoholic = true,
+        glass = null,
+        instructions = null,
+        ingredients = listOf(),
+        creativeCommons = false,
+        dateModified = null
+    )
 }

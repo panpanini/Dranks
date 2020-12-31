@@ -1,6 +1,6 @@
 package jp.co.panpanini.dranks.detail.flux
 
-import jp.co.panpanini.dranks.cocktail.Cocktail
+import com.github.panpanini.cocktail.Cocktail
 import jp.co.panpanini.dranks.cocktail.CocktailApi
 import jp.co.panpanini.dranks.flux.ActionCreator
 import jp.co.panpanini.dranks.flux.Dispatcher

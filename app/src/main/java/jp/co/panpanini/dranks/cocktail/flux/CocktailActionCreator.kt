@@ -2,7 +2,6 @@ package jp.co.panpanini.dranks.cocktail.flux
 
 import jp.co.panpanini.dranks.SearchService
 import jp.co.panpanini.dranks.cocktail.CocktailApi
-import jp.co.panpanini.dranks.cocktail.Drink
 import jp.co.panpanini.dranks.flux.ActionCreator
 import jp.co.panpanini.dranks.flux.Dispatcher
 import jp.co.panpanini.dranks.network.Failure
@@ -30,14 +29,14 @@ class CocktailActionCreator(
 
         scope.launch(coroutineDispatcher) {
             val cocktails = when (val response = cocktailApi.search(cocktail)) {
-                is Success -> response.data.drinks?.map(Drink::toCocktail)
+                is Success -> response.data
                 else -> return@launch handleError(response)
             }
             searchService.addRecentSearch(cocktail)
             dispatcher.dispatch(SetRecentSearchVisibility(false))
             dispatcher.dispatch(ShowLoading(false))
             dispatcher.dispatch(
-                if (cocktails != null) UpdateCocktails(cocktails) else NoCocktailsFound
+                if (cocktails.isNotEmpty()) UpdateCocktails(cocktails) else NoCocktailsFound
             )
         }
     }
@@ -52,6 +51,7 @@ class CocktailActionCreator(
     }
 
     private fun handleError(response: NetworkResponse<*>) {
+        println(response)
         dispatcher.dispatch(ShowLoading(false))
         dispatcher.dispatch(
             when (response) {

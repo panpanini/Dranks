@@ -1,6 +1,7 @@
 package jp.co.panpanini.dranks.cocktail.flux
 
-import jp.co.panpanini.dranks.cocktail.Cocktail
+import com.github.panpanini.cocktail.Cocktail
+
 
 sealed class CocktailAction
 

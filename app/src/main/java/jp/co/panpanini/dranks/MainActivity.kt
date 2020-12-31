@@ -25,6 +25,8 @@ import jp.co.panpanini.dranks.cocktail.flux.CocktailStore
 import jp.co.panpanini.dranks.cocktail.ui.CocktailList
 import jp.co.panpanini.dranks.ui.DranksTheme
 import jp.co.panpanini.dranks.ui.SearchBox
+import kotlinx.serialization.json.Json
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +38,8 @@ class MainActivity : AppCompatActivity() {
 
     private val cocktailStore: CocktailStore
         get() = cocktailFluxProvider.store
+
+    private val json: Json by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                         Loading(cocktailStore.showLoading.liveData)
                         CocktailList(cocktailStore.cocktails.liveData) {
                             startActivity(
-                                    DetailActivity.createIntent(this@MainActivity, it)
+                                    DetailActivity.createIntent(this@MainActivity, it, json)
                             )
                         }
                     }
